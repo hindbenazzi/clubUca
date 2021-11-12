@@ -45,6 +45,16 @@ class UserController extends AbstractController
     }
 
     /**
+         * @Route("/users", name="get_all_users", methods={"GET"})
+    */
+      public function getAll(): JsonResponse
+     {
+       
+       $data = $this->userService->findAll();
+        return new JsonResponse($data, Response::HTTP_OK);
+     }
+
+    /**
      * @Route("/user/numAdesion/{numAdesion}", name="get_user_adesion", methods={"GET"})
     */
      public function getByAdesion($numAdesion): JsonResponse

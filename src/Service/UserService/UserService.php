@@ -15,6 +15,22 @@ class UserService{
         $this->userRepository = $userRepository;
         
     }
+    public function findAll():array{
+        $users = $this->userRepository->findAll();
+        $data=[];
+        foreach ($users as $user) {
+            $data[] = [
+              'id' => $user->getId(),
+              'firstName' => $user->getFirstName(),
+              'lastName' => $user->getLastName(),
+              'email' => $user->getEmail(),
+              'phoneNumber' => $user->getPhoneNumber(),
+              'numAdesion' => $user->getNumAdesion()
+             ];
+     }
+     return $data;
+
+    }
     public function add($data):int{
         $newUser = new User();
 
