@@ -80,4 +80,11 @@ class TypeLocal
 
         return $this;
     }
+    public function toArray()
+{
+    return [
+        'id' => $this->getId(),
+        'Label' => $this->getLabel()
+    ];
+}
 }

@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\TypeLocal;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-
+use Doctrine\ORM\EntityManagerInterface;
 /**
  * @method TypeLocal|null find($id, $lockMode = null, $lockVersion = null)
  * @method TypeLocal|null findOneBy(array $criteria, array $orderBy = null)
@@ -14,9 +14,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TypeLocalRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $manager;
+    public function __construct(ManagerRegistry $registry,EntityManagerInterface $manager)
     {
         parent::__construct($registry, TypeLocal::class);
+        $this->manager = $manager;
     }
 
     // /**
@@ -47,4 +49,20 @@ class TypeLocalRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function save($newType)
+    {
+        $this->manager->persist($newType);
+        $this->manager->flush();
+    }
+     public function update(TypeLocal $type): TypeLocal
+    {
+           $this->manager->persist($type);
+           $this->manager->flush();
+           return $type;
+    } 
+    public function remove(TypeLocal $type)
+    {
+            $this->manager->remove($type);
+            $this->manager->flush();
+    }
 }

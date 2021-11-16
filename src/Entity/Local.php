@@ -123,4 +123,16 @@ class Local
 
         return $this;
     }
+    public function toArray()
+   {
+    return [
+        'id' => $this->getId(),
+        'Nom' => $this->getNom(),
+        'Description' => $this->getDescription(),
+        'Adresse' => $this->getAdresse(),
+        'Type' => $this->getType(),
+        'Prix' => $this->getPrix(),
+        'Capacite'=>$this->getCapacite()
+    ];
+}
 }

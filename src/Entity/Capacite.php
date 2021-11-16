@@ -55,4 +55,12 @@ class Capacite
 
         return $this;
     }
+    public function toArray()
+   {
+    return [
+        'id' => $this->getId(),
+        'Adults' => $this->getAdults(),
+        'Enfants' => $this->getEnfants()
+    ];
+}
 }

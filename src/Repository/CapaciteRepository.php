@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Capacite;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,9 +15,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CapaciteRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $manager;
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, Capacite::class);
+        $this->manager = $manager;
     }
 
     // /**
@@ -47,4 +50,21 @@ class CapaciteRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function save($newCapacite)
+    {
+        $this->manager->persist($newCapacite);
+        $this->manager->flush();
+    }
+    public function update(Capacite $capacite): Capacite
+    {
+        $this->manager->persist($capacite);
+        $this->manager->flush();
+        return $capacite;
+    }
+    public function remove(Capacite $capacite)
+    {
+        $this->manager->remove($capacite);
+        $this->manager->flush();
+    }
 }
