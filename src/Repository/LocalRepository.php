@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Local;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method Local|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +15,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class LocalRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $manager;
+    public function __construct(ManagerRegistry $registry,EntityManagerInterface $manager)
     {
         parent::__construct($registry, Local::class);
+        $this->manager = $manager;
     }
 
     // /**
@@ -47,4 +50,20 @@ class LocalRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function saveLocal($newLocal)
+    {
+        $this->manager->persist($newLocal);
+        $this->manager->flush();
+    }
+     public function updateLocal(Local $local): Local
+    {
+           $this->manager->persist($local);
+           $this->manager->flush();
+           return $user;
+    } 
+    public function removeLocal(Local $local)
+    {
+            $this->manager->remove($local);
+            $this->manager->flush();
+    }
 }

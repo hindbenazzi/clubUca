@@ -12,12 +12,12 @@ use App\Service\UserService\UserService;
 
 class UserController extends AbstractController
 {
-    private $userRepository;
+    
     private $userService;
 
-    public function __construct(UserRepository $userRepository,UserService $userService )
+    public function __construct(UserService $userService )
     {
-        $this->userRepository = $userRepository;
+        
         $this->userService= $userService;
     }
     /**
@@ -51,7 +51,9 @@ class UserController extends AbstractController
      {
        
        $data = $this->userService->findAll();
-        return new JsonResponse($data, Response::HTTP_OK);
+       $response = new JsonResponse($data, Response::HTTP_OK);
+       $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
      }
 
     /**
@@ -70,8 +72,9 @@ class UserController extends AbstractController
      public function getById($id): JsonResponse
      {
         $data=$this->userService->getById($id);
-
-        return new JsonResponse($data, Response::HTTP_OK);
+        $response=new JsonResponse($data, Response::HTTP_OK);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
       }
 
        /**
@@ -91,10 +94,14 @@ class UserController extends AbstractController
      {
       
       if($this->userService->delete($id)==-1){
-        return new JsonResponse(['status' => 'No User with this id'], Response::HTTP_OK);
+        $response=new JsonResponse(['status' => 'No User with this id'], Response::HTTP_OK);
+       $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
       }
+      $response=new JsonResponse(['status' => 'User deleted'], Response::HTTP_OK);
+      $response->headers->set('Access-Control-Allow-Origin', '*');
 
-      return new JsonResponse(['status' => 'User deleted'], Response::HTTP_OK);
+      return $response;
      }
 
 
