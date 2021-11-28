@@ -30,12 +30,12 @@ class LocalService
         foreach ($locals as $local) {
             $data[] = [
                 'id' => $local->getId(),
-                'Nom' => $local->getNom(),
-                'Description' => $local->getDescription(),
-                'Adresse' => $local->getAdresse(),
-                'Prix' => $local->getPrix(),
-                'Capacite' => $local->getCapacite(),
-                'Type' => $local->getType()
+                'nom' => $local->getNom(),
+                'description' => $local->getDescription(),
+                'adresse' => $local->getAdresse(),
+                'prix' => $local->getPrix(),
+                'capacite' => $local->getCapacite()->toArray(),
+                'type' => $local->getType()->toArray()
             ];
         }
         return $data;
@@ -45,13 +45,14 @@ class LocalService
         $newLocal = new Local();
 
         $newLocal
-            ->setNom($data['Nom'])
-            ->setDescription($data['Description'])
-            ->setAdresse($data['Adresse'])
-            ->setPrix($data['Prix']);
-        $cap = $data['Capacite'];
-        $type = $data['Type'];
+            ->setNom($data['nom'])
+            ->setDescription($data['description'])
+            ->setAdresse($data['adresse'])
+            ->setPrix($data['prix']);
+        $cap = $data['capacite'];
+        $type = $data['type'];
         $typeLocal=$this->typeRepository->findOneBy(['label' => $type]);
+        $capacite=$this->capaciteRepository->findOneBy(['reference' => $cap]);
         if($typeLocal==null){
             $typeLocal=new TypeLocal();
             $typeLocal->setLabel($type);
@@ -60,12 +61,20 @@ class LocalService
         }else{
             $newLocal->setType($typeLocal);
         }
-        $capacite=new Capacite();
-        $capacite
-               ->setAdults($cap['Adults'])
-               ->setEnfants($cap['Enfants']);
-        $res=$this->capaciteRepository->save($capacite);
-        $newLocal->setCapacite($capacite);
+        if($capacite==null){
+            $capacite=new Capacite();
+            $capacite
+                   ->setReference($cap)
+                   ->setAdults($cap['adults'])
+                   ->setEnfants($cap['enfants']);
+            $this->capaciteRepository->save($capacite);
+            $newLocal->setCapacite($capacite
+        );
+        }else{
+            $newLocal->setCapacite($capacite);
+        }
+        
+       
         if (empty($newLocal->getNom()) || empty($newLocal->getDescription()) || empty($newLocal->getAdresse()) || empty($newLocal->getPrix())) {
             throw new NotFoundHttpException('Expecting mandatory parameters!');
         }
@@ -82,12 +91,12 @@ class LocalService
 
         $data = [
             'id' => $local->getId(),
-            'Nom' => $local->getNom(),
-            'Description' => $local->getDescription(),
-            'Adresse' => $local->getAdresse(),
-            'Prix' => $local->getPrix(),
-            'Capacite' => $local->getCapacite(),
-            'Type' => $local->getType()
+            'nom' => $local->getNom(),
+            'description' => $local->getDescription(),
+            'adresse' => $local->getAdresse(),
+            'prix' => $local->getPrix(),
+            'capacite' => $local->getCapacite()->toArray(),
+            'type' => $local->getType()->toArray()
         ];
         return $data;
     }
@@ -95,12 +104,12 @@ class LocalService
     public function update($id, $data): array
     {
         $local = $this->localRepository->findOneBy(['id' => $id]);
-        $local->setNom($data['Nom'])
-            ->setDescription($data['Description'])
-            ->setAdresse($data['Adresse'])
-            ->setPrix($data['Prix'])
-            ->setCapacite($data['Capacite'])
-            ->setType($data['Type']);
+        $local->setNom($data['nom'])
+            ->setDescription($data['description'])
+            ->setAdresse($data['adresse'])
+            ->setPrix($data['prix'])
+            ->setCapacite($data['capacite'])
+            ->setType($data['type']);
         $updatedLocal = $this->localRepository->updateLocal($local);
         return $updatedLocal->toArray();
     }

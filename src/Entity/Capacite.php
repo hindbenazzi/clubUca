@@ -27,6 +27,11 @@ class Capacite
      */
     private $enfants;
 
+    /**
+     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     */
+    private $reference;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,4 +68,16 @@ class Capacite
         'Enfants' => $this->getEnfants()
     ];
 }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
 }

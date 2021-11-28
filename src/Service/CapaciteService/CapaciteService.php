@@ -22,8 +22,8 @@ class CapaciteService{
         foreach ($types as $type) {
             $data[] = [
               'id' => $type->getId(),
-              'Adults' => $type->getAdults(),
-              'Enfants' => $type->getEnfants()
+              'adults' => $type->getAdults(),
+              'enfants' => $type->getEnfants()
              ];
      }
      return $data;
@@ -33,8 +33,9 @@ class CapaciteService{
         $newCapacite = new Capacite();
 
         $newCapacite
-               ->setAdults($data['Adults'])
-               ->setEnfants($data['Enfants']);
+               ->setAdults($data['adults'])
+               ->setEnfants($data['enfants'])
+               ->setReference($data['reference']);
         
          if (empty($newCapacite->getAdults())) {
                 throw new NotFoundHttpException('Expecting mandatory parameters!');
@@ -50,16 +51,17 @@ class CapaciteService{
         }
         $data = [
             'id' => $capacite->getId(),
-            'Adults' => $capacite->getAdults(),
-            'Enfants'=>$capacite->getEnfants()
+            'adults' => $capacite->getAdults(),
+            'enfants'=>$capacite->getEnfants(),
+            'reference'=>$capacite->getReference()
            ];
         return $data;
     }
    
     public function update($id,$data):array{
         $capacite = $this->capaciteRepository->findOneBy(['id' => $id]);
-        $capacite->setAdults($data['Adults']);
-        $capacite->setEnfants($data['Enfants']);
+        $capacite->setAdults($data['adults']);
+        $capacite->setEnfants($data['enfants']);
         $updatedCapacite= $this->capaciteRepository->update($capacite);
         return $updatedCapacite->toArray();
     }

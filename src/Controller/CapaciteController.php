@@ -34,7 +34,7 @@ class CapaciteController extends AbstractController
     }
 
     /**
-         * @Route("/capacites", name="get_all_capacites", methods={"GET"})
+         * @Route("/capacities", name="get_all_capacites", methods={"GET"})
     */
       public function getAll(): JsonResponse
      {
@@ -47,7 +47,7 @@ class CapaciteController extends AbstractController
 
     
       /**
-     * @Route("/capacite/id/{id}", name="get_capacite_by_id", methods={"GET"})
+     * @Route("/capacitie/id/{id}", name="get_capacite_by_id", methods={"GET"})
     */
      public function getById($id): JsonResponse
      {
@@ -58,7 +58,7 @@ class CapaciteController extends AbstractController
       }
 
        /**
-        * @Route("/capacite/{id}", name="update_capacite", methods={"PUT"})
+        * @Route("/capacitie/{id}", name="update_capacite", methods={"PUT"})
         */
         public function update($id, Request $request): JsonResponse
        {
@@ -68,7 +68,7 @@ class CapaciteController extends AbstractController
         }
 
      /**
-      * @Route("/capacite/{id}", name="delete_capacite", methods={"DELETE"})
+      * @Route("/capacitie/{id}", name="delete_capacite", methods={"DELETE"})
      */
      public function delete($id): JsonResponse
      {

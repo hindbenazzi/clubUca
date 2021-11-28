@@ -32,7 +32,7 @@ class TypeService{
         $newType = new TypeLocal();
 
         $newType
-               ->setLabel($data['Label']);
+               ->setLabel($data['label']);
         
          if (empty($newType->getLabel())) {
                 throw new NotFoundHttpException('Expecting mandatory parameters!');
@@ -48,14 +48,14 @@ class TypeService{
         }
         $data = [
             'id' => $type->getId(),
-            'Label' => $type->getLabel()
+            'label' => $type->getLabel()
            ];
         return $data;
     }
    
     public function update($id,$data):array{
         $type = $this->typeRepository->findOneBy(['id' => $id]);
-        $type->setLabel($data['Label']);
+        $type->setLabel($data['label']);
         $updatedType = $this->typeRepository->update($type);
         return $updatedType->toArray();
     }

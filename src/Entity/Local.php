@@ -38,7 +38,7 @@ class Local
     private $prix;
 
     /**
-     * @ORM\OneToOne(targetEntity=Capacite::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Capacite::class)
      */
     private $capacite;
 
